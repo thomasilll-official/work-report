@@ -1,0 +1,692 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes, viewport-fit=cover" />
+  <title>Hisab Pro | Pappu Sonavane · Akash Pol · Mohan Pol Expense Tracker</title>
+  <style>
+    @import url("https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700;14..32,800&display=swap");
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    body {
+      background: radial-gradient(circle at 10% 20%, #f0f4fe, #e2eaff);
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      padding: 20px 16px 48px;
+      min-height: 100vh;
+      color: #0b1e3a;
+    }
+
+    .container {
+      max-width: 1280px;
+      margin: 0 auto;
+    }
+
+    /* hero */
+    .hero {
+      text-align: center;
+      margin-bottom: 28px;
+      animation: fadeSlide 0.5s ease;
+    }
+    .chip {
+      display: inline-block;
+      background: rgba(79, 70, 229, 0.12);
+      backdrop-filter: blur(4px);
+      padding: 5px 14px;
+      border-radius: 40px;
+      font-size: 0.7rem;
+      font-weight: 600;
+      color: #4f46e5;
+      letter-spacing: 0.3px;
+      margin-bottom: 12px;
+      border: 1px solid rgba(79,70,229,0.2);
+    }
+    h1 {
+      font-size: 2.2rem;
+      font-weight: 800;
+      background: linear-gradient(135deg, #1e293b, #4f46e5);
+      background-clip: text;
+      -webkit-background-clip: text;
+      color: transparent;
+      letter-spacing: -0.3px;
+    }
+    .sub {
+      color: #536b8a;
+      font-weight: 500;
+      font-size: 0.85rem;
+      margin-top: 6px;
+    }
+    .live-clock {
+      background: rgba(255,255,245,0.7);
+      backdrop-filter: blur(16px);
+      border-radius: 60px;
+      padding: 6px 18px;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      margin-top: 14px;
+      font-size: 0.8rem;
+      font-weight: 500;
+      border: 1px solid rgba(255,255,255,0.6);
+    }
+
+    /* grid */
+    .grid-2col {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 20px;
+      margin-bottom: 28px;
+    }
+
+    /* glassmorphic cards */
+    .glass-card {
+      background: rgba(255, 255, 255, 0.82);
+      backdrop-filter: blur(14px);
+      border-radius: 32px;
+      border: 1px solid rgba(255,255,255,0.5);
+      box-shadow: 0 18px 32px -12px rgba(0, 0, 0, 0.08);
+      padding: 20px 20px 24px;
+      transition: all 0.25s ease;
+    }
+    .glass-card:hover {
+      transform: translateY(-3px);
+      background: rgba(255, 255, 255, 0.9);
+      box-shadow: 0 24px 40px -14px rgba(79,70,229,0.2);
+    }
+
+    .card-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      border-bottom: 2px solid rgba(79, 70, 229, 0.2);
+      padding-bottom: 12px;
+      margin-bottom: 18px;
+    }
+    .icon-bg {
+      background: linear-gradient(125deg, #4f46e5, #818cf8);
+      width: 38px;
+      height: 38px;
+      border-radius: 20px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 1.2rem;
+    }
+    .card-header h2 {
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: #0f172a;
+    }
+
+    /* form */
+    .form-group {
+      margin-bottom: 16px;
+    }
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+      margin-bottom: 14px;
+    }
+    label {
+      font-size: 0.7rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.4px;
+      color: #4b5b7c;
+      display: block;
+      margin-bottom: 5px;
+    }
+    input, select {
+      width: 100%;
+      padding: 12px 14px;
+      border-radius: 24px;
+      border: 1.5px solid #e2edff;
+      background: white;
+      font-family: 'Inter', monospace;
+      font-size: 0.9rem;
+      transition: all 0.2s;
+      outline: none;
+    }
+    input:focus, select:focus {
+      border-color: #4f46e5;
+      box-shadow: 0 0 0 3px rgba(79,70,229,0.15);
+    }
+    input:read-only {
+      background: #f8fafd;
+      color: #1e2f4e;
+      font-weight: 600;
+    }
+
+    /* status toggle modern */
+    .status-switch {
+      display: flex;
+      gap: 12px;
+      background: #eef2ff;
+      padding: 5px;
+      border-radius: 60px;
+    }
+    .status-option {
+      flex: 1;
+      text-align: center;
+      padding: 8px 6px;
+      border-radius: 40px;
+      font-weight: 600;
+      font-size: 0.8rem;
+      cursor: pointer;
+      transition: 0.2s;
+      background: transparent;
+      border: none;
+    }
+    .status-option.active {
+      background: white;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    }
+    .status-option.pending.active { color: #d97706; background: #fffbeb; }
+    .status-option.done.active { color: #059669; background: #ecfdf5; }
+
+    .btn {
+      border: none;
+      border-radius: 44px;
+      padding: 12px 20px;
+      font-weight: 700;
+      font-size: 0.85rem;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+    .btn-primary {
+      background: linear-gradient(105deg, #4f46e5, #6366f1);
+      color: white;
+      box-shadow: 0 6px 14px rgba(79,70,229,0.3);
+    }
+    .btn-primary:active { transform: scale(0.97); }
+    .btn-outline {
+      background: transparent;
+      border: 1px solid #cbd5e1;
+    }
+
+    /* stats grid */
+    .stats-boss {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      margin: 16px 0 14px;
+    }
+    .stat-boss-card {
+      background: rgba(248,250,255,0.8);
+      border-radius: 24px;
+      padding: 10px 6px;
+      text-align: center;
+      backdrop-filter: blur(4px);
+    }
+    .stat-label {
+      font-size: 0.65rem;
+      font-weight: 700;
+      color: #577190;
+    }
+    .stat-number {
+      font-size: 1.3rem;
+      font-weight: 800;
+      color: #0f172a;
+    }
+
+    /* boss-summary list */
+    .boss-list {
+      list-style: none;
+      margin-top: 12px;
+      max-height: 260px;
+      overflow-y: auto;
+    }
+    .boss-list li {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: rgba(255,255,245,0.6);
+      margin-bottom: 8px;
+      padding: 12px 12px;
+      border-radius: 24px;
+      font-weight: 600;
+      transition: 0.1s;
+    }
+
+    /* table */
+    .table-wrapper {
+      overflow-x: auto;
+      border-radius: 24px;
+      margin-top: 16px;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.75rem;
+      min-width: 600px;
+    }
+    th {
+      text-align: left;
+      padding: 14px 8px;
+      background: #f1f6fe;
+      color: #2c3e66;
+    }
+    td {
+      padding: 12px 8px;
+      border-bottom: 1px solid #e6edf8;
+    }
+    .badge-status {
+      display: inline-block;
+      padding: 4px 12px;
+      border-radius: 100px;
+      font-size: 0.7rem;
+      font-weight: 700;
+    }
+    .badge-pending { background: #ffefdf; color: #c2410c; }
+    .badge-done { background: #e0f2ed; color: #0b5e42; }
+    .action-group {
+      display: flex;
+      gap: 8px;
+    }
+    .icon-btn {
+      background: none;
+      border: none;
+      font-size: 1rem;
+      cursor: pointer;
+      padding: 6px;
+      border-radius: 30px;
+      transition: 0.2s;
+    }
+    .icon-btn.edit { color: #3b82f6; background: #eff6ff; }
+    .icon-btn.delete { color: #ef4444; background: #fef2f2; }
+
+    .backup-bar {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-bottom: 10px;
+    }
+
+    /* mobile */
+    @media (max-width: 740px) {
+      .grid-2col { grid-template-columns: 1fr; gap: 18px; }
+      body { padding: 16px 14px 36px; }
+      h1 { font-size: 1.8rem; }
+      .stats-boss { grid-template-columns: repeat(3, 1fr); gap: 8px; }
+      .glass-card { padding: 16px; }
+      .form-row { grid-template-columns: 1fr; gap: 12px; }
+      .btn-primary, .btn-outline { padding: 10px 14px; }
+      .card-header h2 { font-size: 1.1rem; }
+    }
+
+    @keyframes fadeSlide {
+      from { opacity: 0; transform: translateY(-8px);}
+      to { opacity: 1; transform: translateY(0);}
+    }
+    .fade-in { animation: fadeIn 0.3s ease; }
+    @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+  </style>
+</head>
+<body>
+<div class="container">
+  <div class="hero">
+    <div class="chip">🎯 Boss-wise expense · Work category tracking</div>
+    <h1>Hisab <span style="background: linear-gradient(135deg,#4f46e5,#a855f7); background-clip:text; -webkit-background-clip:text; color:transparent;">Pro</span></h1>
+    <p class="sub">developed by- Aditya.S</p>
+    <div class="live-clock" id="liveClock">⏱️ loading...</div>
+  </div>
+
+  <div class="grid-2col">
+    <!-- LEFT: Add/Edit Form -->
+    <div class="glass-card">
+      <div class="card-header">
+        <span class="icon-bg">✍️</span>
+        <h2>Record expense</h2>
+      </div>
+      <form id="expenseForm">
+        <div id="editTag" style="display:none; background:#fef3c7; border-radius:28px; padding:10px 14px; margin-bottom:16px; font-size:0.75rem; font-weight:500;">✏️ Editing mode — click Update</div>
+        <div class="form-group">
+          <label>📅 Date & time</label>
+          <input type="datetime-local" id="dateTime" required />
+        </div>
+        <div class="form-row">
+          <div>
+            <label>👥 Boss (Main Category)</label>
+            <select id="boss" required>
+              <option value="">Select Boss</option>
+              <option value="Pappu Sonavane">Pappu Sonavane</option>
+              <option value="Akash Pol">Akash Pol</option>
+              <option value="Mohan Pol">Mohan Pol</option>
+              <option value="Other">Other</option>
+            </select>
+          </div>
+          <div>
+            <label>🔨 Work (Sub Category)</label>
+            <select id="subCategory" required>
+              <option value="">Select Work</option>
+              <option value="Chhilni">Chhilni</option>
+              <option value="Patani">Patani</option>
+              <option value="Thokni">Thokni</option>
+              <option value="Kadani">Kadani</option>
+              <option value="Khaar">Khaar</option>
+              <option value="Shivni">Shivni</option>
+              <option value="Chuna lavni">Chuna lavni</option>
+              <option value="Other">Other</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-row">
+          <div><label>💰 Rate (₹)</label><input type="number" id="rate" step="0.01" placeholder="Rate per unit" required /></div>
+          <div><label>🔢 Quantity</label><input type="number" id="quantity" step="0.01" placeholder="Quantity" required /></div>
+        </div>
+        <div class="form-group">
+          <label>💵 Total amount (auto) ₹</label>
+          <input type="number" id="amount" step="0.01" readonly placeholder="Auto calculated" />
+        </div>
+        <div class="form-row">
+          <div><label>📝 Note</label><input type="text" id="note" placeholder="optional note" maxlength="60" /></div>
+          <div><label>✅ Status</label>
+            <div class="status-switch" id="statusSwitch">
+              <button type="button" class="status-option pending active" data-status="pending">⏳ Pending</button>
+              <button type="button" class="status-option done" data-status="done">✔️ Done</button>
+            </div>
+            <input type="hidden" id="status" value="pending">
+          </div>
+        </div>
+        <div style="display: flex; gap: 12px; margin-top: 8px;">
+          <button type="submit" id="submitBtn" class="btn btn-primary" style="flex:1">➕ Add expense</button>
+          <button type="button" id="cancelEditBtn" class="btn btn-outline" style="display:none;">Cancel</button>
+        </div>
+      </form>
+    </div>
+
+    <!-- RIGHT: Boss-wise Monthly Report -->
+    <div class="glass-card">
+      <div class="card-header">
+        <span class="icon-bg">📊</span>
+        <h2>Boss report</h2>
+      </div>
+      <div style="display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 16px;">
+        <select id="filterMonth" style="flex:1; border-radius: 40px;"></select>
+        <select id="filterYear" style="flex:1; border-radius: 40px;"></select>
+        <button id="resetCurrentMonth" class="btn btn-outline" style="padding: 0 16px;">📍 Current</button>
+      </div>
+      <div class="stats-boss">
+        <div class="stat-boss-card"><div class="stat-label">📋 Entries</div><div class="stat-number" id="totalEntries">0</div></div>
+        <div class="stat-boss-card"><div class="stat-label">💰 Month total</div><div class="stat-number" id="monthTotal">₹0</div></div>
+        <div class="stat-boss-card"><div class="stat-label">⏳ Pending</div><div class="stat-number" id="pendingCount">0</div></div>
+      </div>
+      <div style="margin-bottom: 10px;"><span style="font-weight:700; font-size:0.75rem;">👥 Boss-wise totals (₹)</span></div>
+      <ul id="bossSummaryList" class="boss-list"></ul>
+      <div style="display:flex; gap:12px; margin-top: 14px;">
+        <select id="exportBossFilter" style="border-radius:40px; flex:1"><option value="ALL">All Bosses</option></select>
+        <button id="exportMonthPdfBtn" class="btn btn-primary" style="background:#f59e0b; box-shadow:none;">📎 PDF</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- All records table -->
+  <div class="glass-card" style="margin-top: 8px;">
+    <div class="card-header">
+      <span class="icon-bg">📋</span>
+      <h2>All transactions · Boss & Work details</h2>
+    </div>
+    <div class="backup-bar">
+      <button id="downloadBackupBtn" class="btn btn-outline">⬇️ Backup JSON</button>
+      <button id="restoreBackupBtn" class="btn btn-outline">📂 Restore</button>
+    </div>
+    <input id="backupFileInput" type="file" accept=".json" hidden />
+    <div class="table-wrapper">
+      <table>
+        <thead>
+          <tr><th>DateTime</th><th>Boss</th><th>Work</th><th>Rate</th><th>Qty</th><th>Amount</th><th>Status</th><th>Actions</th></tr>
+        </thead>
+        <tbody id="recordsBody"></tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<script>
+  // ---------- STORAGE ----------
+  const STORAGE_KEY = "hisab_boss_work_v6";
+  const MONTHS = ["January","February","March","April","May","June","July","August","September","October","November","December"];
+  
+  // Master lists as per requirement
+  const BOSS_OPTIONS = ["Pappu Sonavane", "Akash Pol", "Mohan Pol", "Other"];
+  const WORK_OPTIONS = ["Chhilni", "Patani", "Thokni", "Kadani", "Khaar", "Shivni", "Chuna lavni", "Other"];
+
+  let expenses = [];
+  let editingId = null;
+
+  // DOM elements
+  const form = document.getElementById("expenseForm");
+  const dateTimeInput = document.getElementById("dateTime");
+  const bossSelect = document.getElementById("boss");
+  const subCategorySelect = document.getElementById("subCategory");
+  const rateInput = document.getElementById("rate");
+  const quantityInput = document.getElementById("quantity");
+  const amountInput = document.getElementById("amount");
+  const noteInput = document.getElementById("note");
+  const statusHidden = document.getElementById("status");
+  const submitBtn = document.getElementById("submitBtn");
+  const cancelBtn = document.getElementById("cancelEditBtn");
+  const editTagDiv = document.getElementById("editTag");
+  const recordsBody = document.getElementById("recordsBody");
+  const filterMonth = document.getElementById("filterMonth");
+  const filterYear = document.getElementById("filterYear");
+  const resetMonthBtn = document.getElementById("resetCurrentMonth");
+  const exportBossFilter = document.getElementById("exportBossFilter");
+  const exportPdfBtn = document.getElementById("exportMonthPdfBtn");
+  const totalEntriesSpan = document.getElementById("totalEntries");
+  const monthTotalSpan = document.getElementById("monthTotal");
+  const pendingCountSpan = document.getElementById("pendingCount");
+  const bossSummaryUl = document.getElementById("bossSummaryList");
+  const downloadBtn = document.getElementById("downloadBackupBtn");
+  const restoreBtn = document.getElementById("restoreBackupBtn");
+  const backupFile = document.getElementById("backupFileInput");
+  const liveClockSpan = document.getElementById("liveClock");
+
+  // helpers
+  function formatMoney(val) { return "₹" + Number(val).toLocaleString("en-IN", { minimumFractionDigits: 2, maximumFractionDigits: 2 }); }
+  function formatDateTime(dateStr) { let d=new Date(dateStr); if(isNaN(d)) return "-"; return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')} ${String(d.getHours()).padStart(2,'0')}:${String(d.getMinutes()).padStart(2,'0')}`; }
+  function getNowLocal() { let d=new Date(); return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}T${String(d.getHours()).padStart(2,'0')}:${String(d.getMinutes()).padStart(2,'0')}`; }
+  function escapeHtml(s) { return String(s).replace(/[&<>]/g, function(m){ if(m==='&') return '&amp;'; if(m==='<') return '&lt;'; if(m==='>') return '&gt;'; return m;}); }
+
+  // auto amount
+  function updateAmount() {
+    let r = parseFloat(rateInput.value);
+    let q = parseFloat(quantityInput.value);
+    if(!isNaN(r) && !isNaN(q) && r>0 && q>0) amountInput.value = (r*q).toFixed(2);
+    else amountInput.value = "";
+  }
+  rateInput.addEventListener("input", updateAmount);
+  quantityInput.addEventListener("input", updateAmount);
+
+  // status toggle UI
+  const pendingBtn = document.querySelector(".status-option.pending");
+  const doneBtn = document.querySelector(".status-option.done");
+  function setStatusUI(status) {
+    if(status === "pending") { pendingBtn.classList.add("active"); doneBtn.classList.remove("active"); statusHidden.value = "pending"; }
+    else { doneBtn.classList.add("active"); pendingBtn.classList.remove("active"); statusHidden.value = "done"; }
+  }
+  if(pendingBtn && doneBtn) {
+    pendingBtn.addEventListener("click", () => setStatusUI("pending"));
+    doneBtn.addEventListener("click", () => setStatusUI("done"));
+  }
+
+  // data ops
+  function loadExpenses() { try { let raw = localStorage.getItem(STORAGE_KEY); if(raw) { let arr=JSON.parse(raw); if(Array.isArray(arr)) return arr; } } catch(e){} return []; }
+  function saveExpenses(data) { localStorage.setItem(STORAGE_KEY, JSON.stringify(data)); expenses = data; }
+
+  // render table
+  function renderTable() {
+    if(!expenses.length) { recordsBody.innerHTML = `<td><td colspan="8" style="text-align:center; padding:32px;">✨ No records — add expense by Boss & Work</td>`; return; }
+    let sorted = [...expenses].sort((a,b)=>new Date(b.dateTime)-new Date(a.dateTime));
+    recordsBody.innerHTML = sorted.map(item => `
+      <tr class="fade-in">
+        <td>${escapeHtml(formatDateTime(item.dateTime))}</td>
+        <td><strong>${escapeHtml(item.boss)}</strong></td>
+        <td>${escapeHtml(item.work || '-')}</td>
+        <td>${formatMoney(item.rate)}</td>
+        <td>${item.quantity}</td>
+        <td style="font-weight:600;">${formatMoney(item.amount)}</td>
+        <td><span class="badge-status ${item.status==='done'?'badge-done':'badge-pending'}">${item.status==='done'?'✔️ Done':'⏳ Pending'}</span></td>
+        <td><div class="action-group"><button class="icon-btn edit" data-id="${item.id}">✏️</button><button class="icon-btn delete" data-id="${item.id}">🗑️</button></div></td>
+      </tr>
+    `).join("");
+    document.querySelectorAll(".icon-btn.edit").forEach(btn => btn.addEventListener("click", (e) => startEdit(btn.getAttribute("data-id"))));
+    document.querySelectorAll(".icon-btn.delete").forEach(btn => btn.addEventListener("click", (e) => { if(confirm("Delete permanently?")) deleteExpense(btn.getAttribute("data-id")); }));
+  }
+
+  function deleteExpense(id) { expenses = expenses.filter(i=>i.id!==id); saveExpenses(expenses); if(editingId===id) resetForm(); renderAll(); }
+
+  function startEdit(id) {
+    let item = expenses.find(i=>i.id===id);
+    if(!item) return;
+    editingId = id;
+    dateTimeInput.value = item.dateTime.slice(0,16);
+    bossSelect.value = item.boss;
+    subCategorySelect.value = item.work || "";
+    rateInput.value = item.rate;
+    quantityInput.value = item.quantity;
+    amountInput.value = item.amount;
+    noteInput.value = item.note || "";
+    setStatusUI(item.status || "pending");
+    editTagDiv.style.display = "block";
+    submitBtn.innerHTML = "🔄 Update expense";
+    cancelBtn.style.display = "inline-block";
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }
+
+  function resetForm() {
+    form.reset();
+    editingId = null;
+    dateTimeInput.value = getNowLocal();
+    rateInput.value = ""; quantityInput.value = ""; amountInput.value = "";
+    noteInput.value = ""; bossSelect.value = ""; subCategorySelect.value = "";
+    setStatusUI("pending");
+    editTagDiv.style.display = "none";
+    submitBtn.innerHTML = "➕ Add expense";
+    cancelBtn.style.display = "none";
+  }
+
+  function addOrUpdate(e) {
+    e.preventDefault();
+    let dateTime = dateTimeInput.value;
+    let boss = bossSelect.value.trim();
+    let work = subCategorySelect.value.trim();
+    let rate = parseFloat(rateInput.value);
+    let quantity = parseFloat(quantityInput.value);
+    let amount = parseFloat(amountInput.value);
+    let note = noteInput.value.trim();
+    let status = statusHidden.value;
+
+    if(!dateTime || !boss || work==="" || isNaN(rate) || rate<=0 || isNaN(quantity) || quantity<=0 || isNaN(amount) || amount<=0) {
+      alert("Please fill: Boss, Work, valid Rate (>0), Quantity (>0). Amount auto-calculated.");
+      return;
+    }
+    if(editingId) {
+      let idx = expenses.findIndex(i=>i.id===editingId);
+      if(idx!==-1) { expenses[idx] = { ...expenses[idx], dateTime, boss, work, rate, quantity, amount, note, status }; }
+    } else {
+      expenses.push({ id: crypto.randomUUID(), dateTime, boss, work, rate, quantity, amount, note, status });
+    }
+    saveExpenses(expenses);
+    resetForm();
+    renderAll();
+  }
+
+  // BOSS-WISE SUMMARY (monthly) + work is visible but boss grouping primary
+  function renderBossSummary() {
+    let year = parseInt(filterYear.value);
+    let month = parseInt(filterMonth.value);
+    let filtered = expenses.filter(e => { let d=new Date(e.dateTime); return d.getFullYear()===year && d.getMonth()===month; });
+    let total = filtered.reduce((s,e)=>s+e.amount,0);
+    let pending = filtered.filter(e=>e.status==='pending').length;
+    totalEntriesSpan.innerText = filtered.length;
+    monthTotalSpan.innerText = formatMoney(total);
+    pendingCountSpan.innerText = pending;
+
+    let bossMap = new Map();
+    filtered.forEach(e => { bossMap.set(e.boss, (bossMap.get(e.boss)||0) + e.amount); });
+    let sortedBoss = Array.from(bossMap.entries()).sort((a,b)=>b[1]-a[1]);
+    if(sortedBoss.length===0) { bossSummaryUl.innerHTML = `<li style="justify-content:center; background:none;">📭 No data this month</li>`; }
+    else {
+      bossSummaryUl.innerHTML = sortedBoss.map(([bossName, totalAmt]) => `
+        <li><span>👤 <strong>${escapeHtml(bossName)}</strong></span><span style="font-weight:800;">${formatMoney(totalAmt)}</span></li>
+      `).join("");
+    }
+    // update export filter dropdown with bosses from current month
+    let uniqueBoss = [...new Set(filtered.map(e=>e.boss))];
+    if(uniqueBoss.length === 0) uniqueBoss = BOSS_OPTIONS;
+    exportBossFilter.innerHTML = `<option value="ALL">All Bosses</option>` + uniqueBoss.map(b=>`<option value="${b}">${b}</option>`).join("");
+  }
+
+  function updateYearOptions() {
+    let yearsSet = new Set(expenses.map(e=>new Date(e.dateTime).getFullYear()));
+    yearsSet.add(new Date().getFullYear());
+    let years = Array.from(yearsSet).sort((a,b)=>b-a);
+    let old = filterYear.value;
+    filterYear.innerHTML = years.map(y=>`<option value="${y}">${y}</option>`).join("");
+    if(years.includes(parseInt(old))) filterYear.value = old; else filterYear.value = new Date().getFullYear();
+  }
+
+  function initFilters() {
+    filterMonth.innerHTML = MONTHS.map((m,i)=>`<option value="${i}">${m}</option>`).join("");
+    let now = new Date();
+    filterMonth.value = now.getMonth();
+    updateYearOptions();
+    filterYear.value = now.getFullYear();
+  }
+
+  function renderAll() { renderTable(); updateYearOptions(); renderBossSummary(); }
+
+  // PDF export (Boss & Work details)
+  function exportPDF() {
+    let year = parseInt(filterYear.value), month = parseInt(filterMonth.value);
+    let bossFilter = exportBossFilter.value;
+    let monthItems = expenses.filter(e=>{ let d=new Date(e.dateTime); return d.getFullYear()===year && d.getMonth()===month; });
+    let exportItems = bossFilter==="ALL" ? monthItems : monthItems.filter(e=>e.boss === bossFilter);
+    if(!exportItems.length) { alert("No data for selected boss/month."); return; }
+    let monthName = MONTHS[month];
+    let total = exportItems.reduce((s,e)=>s+e.amount,0);
+    let pending = exportItems.filter(e=>e.status==='pending').length;
+    let done = exportItems.filter(e=>e.status==='done').length;
+    let rows = exportItems.map((e,i)=>`<tr><td>${i+1}</td><td>${formatDateTime(e.dateTime)}</td><td>${escapeHtml(e.boss)}</td><td>${escapeHtml(e.work||'-')}</td><td>${formatMoney(e.amount)}</td><td>${e.status==='done'?'Done':'Pending'}</td></tr>`).join("");
+    let win = window.open("","_blank","width=900,height=700");
+    if(!win) { alert("Allow popup for PDF preview"); return; }
+    win.document.write(`
+      <html><head><meta charset="UTF-8"><title>Hisab Boss Report</title><style>body{font-family:Inter;padding:24px} table{border-collapse:collapse;width:100%} th,td{border:1px solid #ddd;padding:8px;text-align:left}</style></head>
+      <body><h2>📋 Hisab Expense Report</h2><p><strong>${monthName} ${year}</strong> | Boss: ${bossFilter}</p>
+      <p>Total Expense: ${formatMoney(total)} | Entries: ${exportItems.length} | Pending: ${pending} | Done: ${done}</p>
+      <h3>Work Transactions</h3><table><thead><tr><th>#</th><th>DateTime</th><th>Boss</th><th>Work</th><th>Amount</th><th>Status</th></tr></thead><tbody>${rows}</tbody></table></body></html>`);
+    win.document.close(); win.print();
+  }
+
+  // backup / restore
+  function downloadBackup() { let backup={version:6,exportedAt:new Date().toISOString(),records:expenses}; let a=document.createElement("a"); a.href=URL.createObjectURL(new Blob([JSON.stringify(backup,null,2)],{type:"application/json"})); a.download=`hisab-boss-work-${new Date().toISOString().slice(0,10)}.json`; a.click(); URL.revokeObjectURL(a.href); }
+  async function restoreFromFile(e) { let file=e.target.files[0]; if(!file) return; try{ let txt=await file.text(); let p=JSON.parse(txt); let rec=p.records||[]; if(Array.isArray(rec) && confirm(`Restore ${rec.length} records?`)){ expenses=rec.filter(r=>r.id&&r.boss&&typeof r.amount==='number'); saveExpenses(expenses); resetForm(); renderAll(); alert("Restored successfully!"); } } catch(err){ alert("Invalid backup file"); } backupFile.value=""; }
+
+  // clock
+  function startClock() { function tick(){ liveClockSpan.innerHTML = `⏱️ ${new Date().toLocaleString("en-IN",{day:"2-digit",month:"short",hour:"2-digit",minute:"2-digit"})}`; } tick(); setInterval(tick,1000); }
+
+  // event bindings
+  form.addEventListener("submit", addOrUpdate);
+  cancelBtn.addEventListener("click", resetForm);
+  filterMonth.addEventListener("change", renderBossSummary);
+  filterYear.addEventListener("change", renderBossSummary);
+  resetMonthBtn.addEventListener("click", ()=>{ let n=new Date(); filterMonth.value=n.getMonth(); filterYear.value=n.getFullYear(); renderBossSummary(); });
+  exportPdfBtn.addEventListener("click", exportPDF);
+  downloadBtn.addEventListener("click", downloadBackup);
+  restoreBtn.addEventListener("click", ()=>backupFile.click());
+  backupFile.addEventListener("change", restoreFromFile);
+
+  // initial
+  function init() { expenses = loadExpenses(); initFilters(); startClock(); resetForm(); renderAll(); }
+  init();
+</script>
+</body>
+</html>
