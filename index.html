@@ -211,29 +211,35 @@
       border: 1px solid #cbd5e1;
     }
 
-    /* stats grid */
+    /* enhanced stats grid - 6 columns for 6 fields */
     .stats-boss {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
-      gap: 12px;
+      gap: 10px;
       margin: 16px 0 14px;
     }
     .stat-boss-card {
       background: rgba(248,250,255,0.8);
-      border-radius: 24px;
-      padding: 10px 6px;
+      border-radius: 20px;
+      padding: 10px 4px;
       text-align: center;
       backdrop-filter: blur(4px);
     }
     .stat-label {
-      font-size: 0.65rem;
+      font-size: 0.6rem;
       font-weight: 700;
       color: #577190;
+      letter-spacing: 0.2px;
     }
     .stat-number {
-      font-size: 1.3rem;
+      font-size: 1rem;
       font-weight: 800;
       color: #0f172a;
+      margin-top: 4px;
+    }
+    .stat-number.amount {
+      font-size: 0.85rem;
+      color: #4f46e5;
     }
 
     /* boss-summary list */
@@ -253,6 +259,23 @@
       border-radius: 24px;
       font-weight: 600;
       transition: 0.1s;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+    .boss-name {
+      font-weight: 700;
+      min-width: 120px;
+    }
+    .boss-stats {
+      display: flex;
+      gap: 12px;
+      font-size: 0.7rem;
+      flex-wrap: wrap;
+    }
+    .boss-stats span {
+      background: white;
+      padding: 4px 8px;
+      border-radius: 20px;
     }
 
     /* table */
@@ -314,11 +337,16 @@
       .grid-2col { grid-template-columns: 1fr; gap: 18px; }
       body { padding: 16px 14px 36px; }
       h1 { font-size: 1.8rem; }
-      .stats-boss { grid-template-columns: repeat(3, 1fr); gap: 8px; }
+      .stats-boss { grid-template-columns: repeat(2, 1fr); gap: 8px; }
       .glass-card { padding: 16px; }
       .form-row { grid-template-columns: 1fr; gap: 12px; }
       .btn-primary, .btn-outline { padding: 10px 14px; }
       .card-header h2 { font-size: 1.1rem; }
+      .boss-stats { font-size: 0.65rem; }
+    }
+
+    @media (min-width: 1024px) {
+      .stats-boss { grid-template-columns: repeat(6, 1fr); }
     }
 
     @keyframes fadeSlide {
@@ -334,7 +362,7 @@
   <div class="hero">
     <div class="chip">🎯 Boss-wise expense · Work category tracking</div>
     <h1>Hisab <span style="background: linear-gradient(135deg,#4f46e5,#a855f7); background-clip:text; -webkit-background-clip:text; color:transparent;">Pro</span></h1>
-    <p class="sub">developed by- Aditya.S</p>
+    <p class="sub">developed by - Aditya.S</p>
     <div class="live-clock" id="liveClock">⏱️ loading...</div>
   </div>
 
@@ -366,21 +394,21 @@
             <label>🔨 Work (Sub Category)</label>
             <select id="subCategory" required>
               <option value="">Select Work</option>
-                  <option value="Maal hava dena">Maal hava dena</option>
-                  <option value="Fadni">Fadni</option>
-                  <option value="Chuna">Chuna</option>
-                  <option value="Halavani">Halavani</option>
-                  <option value="Kasa cutting">Kasa cutting</option>
-                  <option value="Patni hatakhali">Patni hatakhali</option>
-                  <option value="Patni mashin chalavni">Patni mashin chalavni</option>
-                  <option value="Chilni hatakhali">Chilni hatakhali</option>
-                  <option value="Chhilni mashin">Chhilni mashin</option>
-                  <option value="Khar">Khar</option>
-                  <option value="Thokni cutting">Thokni cutting</option>
-                  <option value="Thokni">Thokni</option>
-                  <option value="Khile kadhni">Khile kadhni</option>
-                  <option value="Pan shiun dene">Pan shiun dene</option>
-                  <option value="Other Work">Other</option>
+              <option value="Maal hava dena">Maal hava dena</option>
+              <option value="Fadni">Fadni</option>
+              <option value="Chuna">Chuna</option>
+              <option value="Halavani">Halavani</option>
+              <option value="Kasa cutting">Kasa cutting</option>
+              <option value="Patni hatakhali">Patni hatakhali</option>
+              <option value="Patni mashin chalavni">Patni mashin chalavni</option>
+              <option value="Chilni hatakhali">Chilni hatakhali</option>
+              <option value="Chhilni mashin">Chhilni mashin</option>
+              <option value="Khar">Khar</option>
+              <option value="Thokni cutting">Thokni cutting</option>
+              <option value="Thokni">Thokni</option>
+              <option value="Khile kadhni">Khile kadhni</option>
+              <option value="Pan shiun dene">Pan shiun dene</option>
+              <option value="Other Work">Other</option>
             </select>
           </div>
         </div>
@@ -409,7 +437,7 @@
       </form>
     </div>
 
-    <!-- RIGHT: Boss-wise Monthly Report -->
+    <!-- RIGHT: Boss-wise Monthly Report with Enhanced Stats (6 fields) -->
     <div class="glass-card">
       <div class="card-header">
         <span class="icon-bg">📊</span>
@@ -420,12 +448,18 @@
         <select id="filterYear" style="flex:1; border-radius: 40px;"></select>
         <button id="resetCurrentMonth" class="btn btn-outline" style="padding: 0 16px;">📍 Current</button>
       </div>
+      
+      <!-- Enhanced Stats: 6 fields - Entries, Pending Entries, Pending Payment, Done Entries, Done Payment, Total Payment -->
       <div class="stats-boss">
         <div class="stat-boss-card"><div class="stat-label">📋 Entries</div><div class="stat-number" id="totalEntries">0</div></div>
-        <div class="stat-boss-card"><div class="stat-label">💰 Month total</div><div class="stat-number" id="monthTotal">₹0</div></div>
-        <div class="stat-boss-card"><div class="stat-label">⏳ Pending</div><div class="stat-number" id="pendingCount">0</div></div>
+        <div class="stat-boss-card"><div class="stat-label">⏳ Pending Entries</div><div class="stat-number" id="pendingEntriesCount">0</div></div>
+        <div class="stat-boss-card"><div class="stat-label">💰 Pending Payment</div><div class="stat-number amount" id="pendingPayment">₹0</div></div>
+        <div class="stat-boss-card"><div class="stat-label">✔️ Done Entries</div><div class="stat-number" id="doneEntriesCount">0</div></div>
+        <div class="stat-boss-card"><div class="stat-label">💵 Done Payment</div><div class="stat-number amount" id="donePayment">₹0</div></div>
+        <div class="stat-boss-card"><div class="stat-label">🏦 Total Payment</div><div class="stat-number amount" id="totalPayment">₹0</div></div>
       </div>
-      <div style="margin-bottom: 10px;"><span style="font-weight:700; font-size:0.75rem;">👥 Boss-wise totals (₹)</span></div>
+      
+      <div style="margin-bottom: 10px;"><span style="font-weight:700; font-size:0.75rem;">👥 Boss-wise breakdown</span></div>
       <ul id="bossSummaryList" class="boss-list"></ul>
       <div style="display:flex; gap:12px; margin-top: 14px;">
         <select id="exportBossFilter" style="border-radius:40px; flex:1"><option value="ALL">All Bosses</option></select>
@@ -458,27 +492,10 @@
 
 <script>
   // ---------- STORAGE ----------
-  const STORAGE_KEY = "hisab_boss_work_v6";
+  const STORAGE_KEY = "hisab_boss_work_v8";
   const MONTHS = ["January","February","March","April","May","June","July","August","September","October","November","December"];
   
-  // Master lists as per requirement
   const BOSS_OPTIONS = ["Pappu Sonavane", "Akash Pol", "Mohan Pol", "Other"];
-  const WORK_OPTIONS = [  
-  "Maal hava dena",
-  "Fadni",
-  "Chuna",
-  "Halavani",
-  "Kasa cutting",
-  "Patni hatakhali",
-  "Patni mashin chalavni",
-  "Chilni hatakhali",
-  "Chhilni mashin",
-  "Khar",
-  "Thokni cutting",
-  "Thokni",
-  "Khile kadhni",
-  "Pan shiun dene",
-  "Other"];
 
   let expenses = [];
   let editingId = null;
@@ -502,9 +519,15 @@
   const resetMonthBtn = document.getElementById("resetCurrentMonth");
   const exportBossFilter = document.getElementById("exportBossFilter");
   const exportPdfBtn = document.getElementById("exportMonthPdfBtn");
+  
+  // Enhanced stats elements (6 fields)
   const totalEntriesSpan = document.getElementById("totalEntries");
-  const monthTotalSpan = document.getElementById("monthTotal");
-  const pendingCountSpan = document.getElementById("pendingCount");
+  const pendingEntriesCountSpan = document.getElementById("pendingEntriesCount");
+  const pendingPaymentSpan = document.getElementById("pendingPayment");
+  const doneEntriesCountSpan = document.getElementById("doneEntriesCount");
+  const donePaymentSpan = document.getElementById("donePayment");
+  const totalPaymentSpan = document.getElementById("totalPayment");
+  
   const bossSummaryUl = document.getElementById("bossSummaryList");
   const downloadBtn = document.getElementById("downloadBackupBtn");
   const restoreBtn = document.getElementById("restoreBackupBtn");
@@ -545,7 +568,7 @@
 
   // render table
   function renderTable() {
-    if(!expenses.length) { recordsBody.innerHTML = `<td><td colspan="8" style="text-align:center; padding:32px;">✨ No records — add expense by Boss & Work</td>`; return; }
+    if(!expenses.length) { recordsBody.innerHTML = `<tr><td colspan="8" style="text-align:center; padding:32px;">✨ No records — add expense by Boss & Work</td>`; return; }
     let sorted = [...expenses].sort((a,b)=>new Date(b.dateTime)-new Date(a.dateTime));
     recordsBody.innerHTML = sorted.map(item => `
       <tr class="fade-in">
@@ -557,7 +580,7 @@
         <td style="font-weight:600;">${formatMoney(item.amount)}</td>
         <td><span class="badge-status ${item.status==='done'?'badge-done':'badge-pending'}">${item.status==='done'?'✔️ Done':'⏳ Pending'}</span></td>
         <td><div class="action-group"><button class="icon-btn edit" data-id="${item.id}">✏️</button><button class="icon-btn delete" data-id="${item.id}">🗑️</button></div></td>
-      </tr>
+       tratt
     `).join("");
     document.querySelectorAll(".icon-btn.edit").forEach(btn => btn.addEventListener("click", (e) => startEdit(btn.getAttribute("data-id"))));
     document.querySelectorAll(".icon-btn.delete").forEach(btn => btn.addEventListener("click", (e) => { if(confirm("Delete permanently?")) deleteExpense(btn.getAttribute("data-id")); }));
@@ -621,27 +644,57 @@
     renderAll();
   }
 
-  // BOSS-WISE SUMMARY (monthly) + work is visible but boss grouping primary
+  // ENHANCED BOSS SUMMARY with full stats (including Total Payment)
   function renderBossSummary() {
     let year = parseInt(filterYear.value);
     let month = parseInt(filterMonth.value);
     let filtered = expenses.filter(e => { let d=new Date(e.dateTime); return d.getFullYear()===year && d.getMonth()===month; });
-    let total = filtered.reduce((s,e)=>s+e.amount,0);
-    let pending = filtered.filter(e=>e.status==='pending').length;
-    totalEntriesSpan.innerText = filtered.length;
-    monthTotalSpan.innerText = formatMoney(total);
-    pendingCountSpan.innerText = pending;
-
-    let bossMap = new Map();
-    filtered.forEach(e => { bossMap.set(e.boss, (bossMap.get(e.boss)||0) + e.amount); });
-    let sortedBoss = Array.from(bossMap.entries()).sort((a,b)=>b[1]-a[1]);
-    if(sortedBoss.length===0) { bossSummaryUl.innerHTML = `<li style="justify-content:center; background:none;">📭 No data this month</li>`; }
-    else {
-      bossSummaryUl.innerHTML = sortedBoss.map(([bossName, totalAmt]) => `
-        <li><span>👤 <strong>${escapeHtml(bossName)}</strong></span><span style="font-weight:800;">${formatMoney(totalAmt)}</span></li>
+    
+    // Overall totals
+    let totalEntries = filtered.length;
+    let pendingEntries = filtered.filter(e=>e.status==='pending').length;
+    let pendingAmt = filtered.filter(e=>e.status==='pending').reduce((s,e)=>s+e.amount,0);
+    let doneEntries = filtered.filter(e=>e.status==='done').length;
+    let doneAmt = filtered.filter(e=>e.status==='done').reduce((s,e)=>s+e.amount,0);
+    let totalAmt = pendingAmt + doneAmt;
+    
+    totalEntriesSpan.innerText = totalEntries;
+    pendingEntriesCountSpan.innerText = pendingEntries;
+    pendingPaymentSpan.innerText = formatMoney(pendingAmt);
+    doneEntriesCountSpan.innerText = doneEntries;
+    donePaymentSpan.innerText = formatMoney(doneAmt);
+    totalPaymentSpan.innerText = formatMoney(totalAmt);
+    
+    // Boss-wise breakdown with detailed stats
+    let bossDetails = new Map(); // key: boss name, value: { totalAmt, pendingCount, pendingAmt, doneCount, doneAmt }
+    filtered.forEach(e => {
+      if(!bossDetails.has(e.boss)) {
+        bossDetails.set(e.boss, { totalAmt:0, pendingCount:0, pendingAmt:0, doneCount:0, doneAmt:0 });
+      }
+      let stat = bossDetails.get(e.boss);
+      stat.totalAmt += e.amount;
+      if(e.status === 'pending') { stat.pendingCount++; stat.pendingAmt += e.amount; }
+      else { stat.doneCount++; stat.doneAmt += e.amount; }
+    });
+    
+    let sortedBoss = Array.from(bossDetails.entries()).sort((a,b)=>b[1].totalAmt - a[1].totalAmt);
+    if(sortedBoss.length===0) { 
+      bossSummaryUl.innerHTML = `<li style="justify-content:center; background:none;">📭 No data this month</li>`; 
+    } else {
+      bossSummaryUl.innerHTML = sortedBoss.map(([bossName, stats]) => `
+        <li>
+          <div class="boss-name">👤 <strong>${escapeHtml(bossName)}</strong></div>
+          <div class="boss-stats">
+            <span>📋 ${stats.pendingCount+stats.doneCount}</span>
+            <span>⏳ ${stats.pendingCount} / ${formatMoney(stats.pendingAmt)}</span>
+            <span>✔️ ${stats.doneCount} / ${formatMoney(stats.doneAmt)}</span>
+            <span>💰 Total: ${formatMoney(stats.totalAmt)}</span>
+          </div>
+        </li>
       `).join("");
     }
-    // update export filter dropdown with bosses from current month
+    
+    // update export filter dropdown
     let uniqueBoss = [...new Set(filtered.map(e=>e.boss))];
     if(uniqueBoss.length === 0) uniqueBoss = BOSS_OPTIONS;
     exportBossFilter.innerHTML = `<option value="ALL">All Bosses</option>` + uniqueBoss.map(b=>`<option value="${b}">${b}</option>`).join("");
@@ -666,7 +719,7 @@
 
   function renderAll() { renderTable(); updateYearOptions(); renderBossSummary(); }
 
-  // PDF export (Boss & Work details)
+  // PDF export with enhanced stats (including Total Payment)
   function exportPDF() {
     let year = parseInt(filterYear.value), month = parseInt(filterMonth.value);
     let bossFilter = exportBossFilter.value;
@@ -676,20 +729,22 @@
     let monthName = MONTHS[month];
     let total = exportItems.reduce((s,e)=>s+e.amount,0);
     let pending = exportItems.filter(e=>e.status==='pending').length;
+    let pendingAmt = exportItems.filter(e=>e.status==='pending').reduce((s,e)=>s+e.amount,0);
     let done = exportItems.filter(e=>e.status==='done').length;
+    let doneAmt = exportItems.filter(e=>e.status==='done').reduce((s,e)=>s+e.amount,0);
     let rows = exportItems.map((e,i)=>`<tr><td>${i+1}</td><td>${formatDateTime(e.dateTime)}</td><td>${escapeHtml(e.boss)}</td><td>${escapeHtml(e.work||'-')}</td><td>${formatMoney(e.amount)}</td><td>${e.status==='done'?'Done':'Pending'}</td></tr>`).join("");
     let win = window.open("","_blank","width=900,height=700");
     if(!win) { alert("Allow popup for PDF preview"); return; }
     win.document.write(`
       <html><head><meta charset="UTF-8"><title>Hisab Boss Report</title><style>body{font-family:Inter;padding:24px} table{border-collapse:collapse;width:100%} th,td{border:1px solid #ddd;padding:8px;text-align:left}</style></head>
       <body><h2>📋 Hisab Expense Report</h2><p><strong>${monthName} ${year}</strong> | Boss: ${bossFilter}</p>
-      <p>Total Expense: ${formatMoney(total)} | Entries: ${exportItems.length} | Pending: ${pending} | Done: ${done}</p>
+      <p><strong>Summary:</strong> Total Expense: ${formatMoney(total)} | Entries: ${exportItems.length} | Pending: ${pending} (${formatMoney(pendingAmt)}) | Done: ${done} (${formatMoney(doneAmt)})</p>
       <h3>Work Transactions</h3><table><thead><tr><th>#</th><th>DateTime</th><th>Boss</th><th>Work</th><th>Amount</th><th>Status</th></tr></thead><tbody>${rows}</tbody></table></body></html>`);
     win.document.close(); win.print();
   }
 
   // backup / restore
-  function downloadBackup() { let backup={version:6,exportedAt:new Date().toISOString(),records:expenses}; let a=document.createElement("a"); a.href=URL.createObjectURL(new Blob([JSON.stringify(backup,null,2)],{type:"application/json"})); a.download=`hisab-boss-work-${new Date().toISOString().slice(0,10)}.json`; a.click(); URL.revokeObjectURL(a.href); }
+  function downloadBackup() { let backup={version:8,exportedAt:new Date().toISOString(),records:expenses}; let a=document.createElement("a"); a.href=URL.createObjectURL(new Blob([JSON.stringify(backup,null,2)],{type:"application/json"})); a.download=`hisab-boss-work-${new Date().toISOString().slice(0,10)}.json`; a.click(); URL.revokeObjectURL(a.href); }
   async function restoreFromFile(e) { let file=e.target.files[0]; if(!file) return; try{ let txt=await file.text(); let p=JSON.parse(txt); let rec=p.records||[]; if(Array.isArray(rec) && confirm(`Restore ${rec.length} records?`)){ expenses=rec.filter(r=>r.id&&r.boss&&typeof r.amount==='number'); saveExpenses(expenses); resetForm(); renderAll(); alert("Restored successfully!"); } } catch(err){ alert("Invalid backup file"); } backupFile.value=""; }
 
   // clock
